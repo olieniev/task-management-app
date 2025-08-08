@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 1
+      id: 2
       author: com.olieniev
       changes:
         - createTable:
@@ -45,4 +45,12 @@ databaseChangeLog:
                   type: bit
                   defaultValueBoolean: false
                   constraints:
+                    nullable: false
+              - column:
+                  name: role_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: fk_users_roles_id
+                    referencedTableName: roles
+                    referencedColumnNames: id
                     nullable: false
