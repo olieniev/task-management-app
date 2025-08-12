@@ -1,6 +1,7 @@
 package com.olieniev.taskmanagement.service.impl;
 
 import com.olieniev.taskmanagement.dto.user.UpdateRoleRequestDto;
+import com.olieniev.taskmanagement.dto.user.UpdateUserRequestDto;
 import com.olieniev.taskmanagement.dto.user.UserRegistrationRequestDto;
 import com.olieniev.taskmanagement.dto.user.UserResponseDto;
 import com.olieniev.taskmanagement.exception.EntityNotFoundException;
@@ -76,5 +77,25 @@ public class UserServiceImpl implements UserService {
             throw new StrategyNotFoundException("Strategy not found!");
         }
         return userMapper.toResponseDto(strategy.updateRole(user, role, userToUpdate));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public UserResponseDto getInfo(User user) {
+        return userMapper.toResponseDto(
+            userRepository.findById(user.getId()).orElseThrow(
+                () -> new EntityNotFoundException(
+                    "Error occurred while finding user with id: " + user.getId())
+            )
+        );
+    }
+
+    @Override
+    public UserResponseDto updateUser(User user, UpdateUserRequestDto requestDto) {
+        userMapper.updateUserFromDto(requestDto, user);
+        if (requestDto.password() != null) {
+            user.setPassword(passwordEncoder.encode(requestDto.password()));
+        }
+        return userMapper.toResponseDto(userRepository.save(user));
     }
 }
