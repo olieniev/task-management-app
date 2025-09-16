@@ -38,4 +38,12 @@ public class CustomGlobalExceptionHandler {
         return new ResponseEntity<>(ex.getMessage(),
             HttpStatus.UNAUTHORIZED);
     }
+
+    @ExceptionHandler(ProjectUpdateUnauthorised.class)
+    public ResponseEntity<String> handleProjectUpdateUnauthorisedExceptions(
+            ProjectUpdateUnauthorised ex
+    ) {
+        return new ResponseEntity<>(ex.getMessage(),
+                HttpStatus.UNAUTHORIZED);
+    }
 }
