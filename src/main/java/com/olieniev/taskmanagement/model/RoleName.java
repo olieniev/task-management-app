@@ -8,6 +8,9 @@ public enum RoleName {
 
     @JsonCreator
     public static RoleName fromString(String value) {
+        if (value.toUpperCase().startsWith("ROLE_")) {
+            return RoleName.valueOf(value.toUpperCase());
+        }
         return RoleName.valueOf("ROLE_" + value.toUpperCase());
     }
 }
